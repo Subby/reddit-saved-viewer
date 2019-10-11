@@ -4,6 +4,17 @@ import SavedContentList from "./SavedContentList";
 
 class AppContainer extends React.Component {
 
+    NSFWValues = {
+        NSFW_ONLY: 'nsfw_only',
+        SFW_ONLY: 'sfw_only',
+        BOTH: 'both'
+    };
+
+    SubmissionValues = {
+        POSTS_ONLY: 'posts_only',
+        SUBMISSIONS_ONLY: 'submissions_only',
+        BOTH: 'both'
+    };
 
     constructor(props) {
         super(props);
@@ -17,7 +28,10 @@ class AppContainer extends React.Component {
 
         this.state = {
             savedContent: [],
-            filteredContent: []
+            filteredContent: [],
+            filterSearchValue: '',
+            filterNSFWValue: this.NSFWValues.BOTH,
+            filterSubmissionValue: this.SubmissionValues.BOTH
         };
 
         reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value))
@@ -32,6 +46,17 @@ class AppContainer extends React.Component {
         return <div>
             <header>
                 <p>Header</p>
+                <select id="overNsfwFilterSelection" value={this.state.filterNSFWValue}>
+                    <option value={this.SubmissionValues.BOTH}>Both</option>
+                    <option value={this.NSFWValues.POSTS_ONLY}>Submissions Only</option>
+                    <option value={this.NSFWValues.SUBMISSIONS_ONLY}>Posts Only</option>
+                </select>
+                <select id="overNsfwFilterSelection">
+                    <option value={this.NSFWValues.BOTH}>Both</option>
+                    <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
+                    <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
+                </select>
+                <input type="text" name="" value={this.state.filterSearchValue}/>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.savedContent}/>
