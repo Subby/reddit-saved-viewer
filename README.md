@@ -9,3 +9,4 @@ Also, this project is mainly for me to learn about and to utilise React for the 
 
 ## Built with (so far)
 - React
+- Snoowrap
