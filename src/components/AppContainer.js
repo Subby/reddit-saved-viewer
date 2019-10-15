@@ -46,12 +46,12 @@ class AppContainer extends React.Component {
         return <div>
             <header>
                 <p>Header</p>
-                <select id="overNsfwFilterSelection" value={this.state.filterNSFWValue}>
+                <select id="postFilterSelection" value={this.state.filterSubmissionValue}>
                     <option value={this.SubmissionValues.BOTH}>Both</option>
-                    <option value={this.NSFWValues.POSTS_ONLY}>Submissions Only</option>
-                    <option value={this.NSFWValues.SUBMISSIONS_ONLY}>Posts Only</option>
+                    <option value={this.SubmissionValues.POSTS_ONLY}>Submissions Only</option>
+                    <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Posts Only</option>
                 </select>
-                <select id="overNsfwFilterSelection">
+                <select id="nsfwFilterSelection" value={this.state.filterNSFWValue}>
                     <option value={this.NSFWValues.BOTH}>Both</option>
                     <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
                     <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
