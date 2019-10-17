@@ -34,19 +34,38 @@ class AppContainer extends React.Component {
             filterSubmissionValue: this.SubmissionValues.BOTH
         };
 
-        reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value))
+        reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value));
+        this.handlePostFilterChange = this.handlePostFilterChange.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
-        this.setState({savedContent: retrievedContent});
+        this.setState({savedContent: retrievedContent, filteredContent: retrievedContent});
         console.log(retrievedContent)
     }
+
+    handlePostFilterChange(event) {
+        let savedContent = this.state.savedContent;
+        if(event.target.value === this.SubmissionValues.POSTS_ONLY) {
+            let filteredContent = savedContent.filter(function(currentPost) {
+               return (typeof currentPost == 'Submission');
+            });
+            this.setState({filteredContent: filteredContent});
+        } else if (event.target.value === this.SubmissionValues.POSTS_ONLY) {
+            let filteredContent = savedContent.filter(function(currentPost) {
+                return (typeof currentPost == 'Comment');
+            });
+            this.setState({filteredContent: filteredContent});
+        } else {
+            this.setState({filteredContent: this.state.retrievedContent});
+        }
+    }
+
 
     render() {
         return <div>
             <header>
                 <p>Header</p>
-                <select id="postFilterSelection" value={this.state.filterSubmissionValue}>
+                <select id="postFilterSelection" value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}>
                     <option value={this.SubmissionValues.BOTH}>Both</option>
                     <option value={this.SubmissionValues.POSTS_ONLY}>Submissions Only</option>
                     <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Posts Only</option>
@@ -59,7 +78,7 @@ class AppContainer extends React.Component {
                 <input type="text" name="" value={this.state.filterSearchValue}/>
             </header>
             <section id="savedContent">
-                <SavedContentList savedContent={this.state.savedContent}/>
+                <SavedContentList savedContent={this.state.filteredContent}/>
             </section>
         </div>
     }
