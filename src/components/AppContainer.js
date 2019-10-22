@@ -48,12 +48,12 @@ class AppContainer extends React.Component {
         if(event.target.value === this.SubmissionValues.SUBMISSIONS_ONLY) {
             let filteredContent = savedContent.filter(function(currentPost) {
                 console.log(typeof currentPost);
-               return (typeof currentPost == 'Submission');
+               return (currentPost.constructor.name === 'Submission');
             });
             this.setState({filteredContent: filteredContent});
         } else if (event.target.value === this.SubmissionValues.POSTS_ONLY) {
             let filteredContent = savedContent.filter(function(currentPost) {
-                return (typeof currentPost == 'Comment');
+                return (currentPost.constructor.name === 'Comment');
             });
             this.setState({filteredContent: filteredContent});
         } else {
