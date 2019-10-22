@@ -45,8 +45,9 @@ class AppContainer extends React.Component {
 
     handlePostFilterChange(event) {
         let savedContent = this.state.savedContent;
-        if(event.target.value === this.SubmissionValues.POSTS_ONLY) {
+        if(event.target.value === this.SubmissionValues.SUBMISSIONS_ONLY) {
             let filteredContent = savedContent.filter(function(currentPost) {
+                console.log(typeof currentPost);
                return (typeof currentPost == 'Submission');
             });
             this.setState({filteredContent: filteredContent});
@@ -67,8 +68,8 @@ class AppContainer extends React.Component {
                 <p>Header</p>
                 <select id="postFilterSelection" value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}>
                     <option value={this.SubmissionValues.BOTH}>Both</option>
-                    <option value={this.SubmissionValues.POSTS_ONLY}>Submissions Only</option>
-                    <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Posts Only</option>
+                    <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Submissions Only</option>
+                    <option value={this.SubmissionValues.POSTS_ONLY}>Posts Only</option>
                 </select>
                 <select id="nsfwFilterSelection" value={this.state.filterNSFWValue}>
                     <option value={this.NSFWValues.BOTH}>Both</option>
