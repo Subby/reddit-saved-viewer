@@ -45,20 +45,22 @@ class AppContainer extends React.Component {
 
     handlePostFilterChange(event) {
         let savedContent = this.state.savedContent;
-        if(event.target.value === this.SubmissionValues.SUBMISSIONS_ONLY) {
-            let filteredContent = savedContent.filter(function(currentPost) {
-                console.log(typeof currentPost);
-               return (currentPost.constructor.name === 'Submission');
-            });
-            this.setState({filteredContent: filteredContent});
-        } else if (event.target.value === this.SubmissionValues.POSTS_ONLY) {
-            let filteredContent = savedContent.filter(function(currentPost) {
-                return (currentPost.constructor.name === 'Comment');
-            });
-            this.setState({filteredContent: filteredContent});
-        } else {
-            this.setState({filteredContent: this.state.retrievedContent});
+        let filteredContent = savedContent;
+        switch(event.target.value) {
+            case this.SubmissionValues.SUBMISSIONS_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return (currentPost.constructor.name === 'Submission');
+                });
+                break;
+            case this.SubmissionValues.POSTS_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return (currentPost.constructor.name === 'Comment');
+                });
+                break;
+            default:
+                break;
         }
+        this.setState({filteredContent: filteredContent, filterSubmissionValue: event.target.value});
     }
 
 
