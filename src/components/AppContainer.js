@@ -36,6 +36,7 @@ class AppContainer extends React.Component {
 
         reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value));
         this.handlePostFilterChange = this.handlePostFilterChange.bind(this);
+        this.handleNsfwFilterChange = this.handleNsfwFilterChange.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
@@ -63,6 +64,26 @@ class AppContainer extends React.Component {
         this.setState({filteredContent: filteredContent, filterSubmissionValue: event.target.value});
     }
 
+    handleNsfwFilterChange(event) {
+        let savedContent = this.state.savedContent;
+        let filteredContent = savedContent;
+        switch(event.target.value) {
+            case this.NSFWValues.SFW_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return !currentPost.over_18;
+                });
+                break;
+            case this.NSFWValues.NSFW_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return currentPost.over_18;
+                });
+                break;
+            default:
+                break;
+        }
+        this.setState({filteredContent: filteredContent, filterNSFWValue: event.target.value});
+    }
+
 
     render() {
         return <div>
@@ -73,12 +94,12 @@ class AppContainer extends React.Component {
                     <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Submissions Only</option>
                     <option value={this.SubmissionValues.POSTS_ONLY}>Posts Only</option>
                 </select>
-                <select id="nsfwFilterSelection" value={this.state.filterNSFWValue}>
+                <select id="nsfwFilterSelection" value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}>
                     <option value={this.NSFWValues.BOTH}>Both</option>
                     <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
                     <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
                 </select>
-                <input type="text" name="" value={this.state.filterSearchValue}/>
+                <input type="text" name="" defaultValue={this.state.filterSearchValue}/>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.filteredContent}/>
