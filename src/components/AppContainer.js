@@ -45,29 +45,28 @@ class AppContainer extends React.Component {
     }
 
     handlePostFilterChange(event) {
-        let savedContent = this.state.savedContent;
-        let filteredContent = savedContent;
-        switch(event.target.value) {
-            case this.SubmissionValues.SUBMISSIONS_ONLY:
-                filteredContent = savedContent.filter(function(currentPost) {
-                    return (currentPost.constructor.name === 'Submission');
-                });
-                break;
-            case this.SubmissionValues.POSTS_ONLY:
-                filteredContent = savedContent.filter(function(currentPost) {
-                    return (currentPost.constructor.name === 'Comment');
-                });
-                break;
-            default:
-                break;
-        }
-        this.setState({filteredContent: filteredContent, filterSubmissionValue: event.target.value});
+        this.setState({filterSubmissionValue: event.target.value});
+        console.log("post filter val:" + this.state.filterSubmissionValue);
+        this.filterContent();
     }
 
     handleNsfwFilterChange(event) {
+        this.setState({filterNSFWValue: event.target.value});
+        console.log("post filter val:" + this.state.filterNSFWValue);
+        this.filterContent();
+    }
+
+    filterContent() {
         let savedContent = this.state.savedContent;
+
+        let filteredByNsfwContent = this.filterByNsfw(savedContent);
+        let filteredContent = this.filterBySubmissionType(filteredByNsfwContent);
+        this.setState({filteredContent: filteredContent});
+    }
+
+    filterByNsfw(savedContent) {
         let filteredContent = savedContent;
-        switch(event.target.value) {
+        switch(this.state.filterNSFWValue) {
             case this.NSFWValues.SFW_ONLY:
                 filteredContent = savedContent.filter(function(currentPost) {
                     return !currentPost.over_18;
@@ -81,7 +80,27 @@ class AppContainer extends React.Component {
             default:
                 break;
         }
-        this.setState({filteredContent: filteredContent, filterNSFWValue: event.target.value});
+        return filteredContent;
+    }
+
+
+    filterBySubmissionType(savedContent) {
+        let filteredContent = savedContent;
+        switch(this.state.filterSubmissionValue) {
+            case this.SubmissionValues.SUBMISSIONS_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return (currentPost.constructor.name === 'Submission');
+                });
+                break;
+            case this.SubmissionValues.POSTS_ONLY:
+                filteredContent = savedContent.filter(function(currentPost) {
+                    return (currentPost.constructor.name === 'Comment');
+                });
+                break;
+            default:
+                break;
+        }
+        return filteredContent;
     }
 
 
@@ -106,6 +125,8 @@ class AppContainer extends React.Component {
             </section>
         </div>
     }
+
+
 }
 
 export default AppContainer;
