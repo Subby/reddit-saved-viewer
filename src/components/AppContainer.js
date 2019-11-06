@@ -37,6 +37,7 @@ class AppContainer extends React.Component {
         reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value));
         this.handlePostFilterChange = this.handlePostFilterChange.bind(this);
         this.handleNsfwFilterChange = this.handleNsfwFilterChange.bind(this);
+        this.handleSearchFilterChange = this.handleSearchFilterChange.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
@@ -53,15 +54,19 @@ class AppContainer extends React.Component {
     handleNsfwFilterChange(event) {
         this.setState({filterNSFWValue: event.target.value});
         console.log("post filter val:" + this.state.filterNSFWValue);
-        this.filterContent();
+    }
+
+    handleSearchFilterChange(event) {
+        this.setState({filterSearchValue: event.target.value});
     }
 
     filterContent() {
         let savedContent = this.state.savedContent;
 
         let filteredByNsfwContent = this.filterByNsfw(savedContent);
-        let filteredContent = this.filterBySubmissionType(filteredByNsfwContent);
-        this.setState({filteredContent: filteredContent});
+        let filteredSubmissionContent = this.filterBySubmissionType(filteredByNsfwContent);
+        let filteredSearchedContent = this.filteredSearchContent(filteredSubmissionContent);
+        this.setState({filteredContent: filteredSearchedContent});
     }
 
     filterByNsfw(savedContent) {
@@ -103,6 +108,15 @@ class AppContainer extends React.Component {
         return filteredContent;
     }
 
+    filteredSearchContent(savedContent) {
+        return savedContent.filter(function (currentPost) {
+            if (currentPost.constructor.name === 'Comment') {
+                return (currentPost.body.includes(this.state.filterSearchValue));
+            } else if (currentPost.constructor.name === 'Submission') {
+                return (currentPost.title.includes(this.state.filterSearchValue));
+            }
+        });
+    }
 
     render() {
         return <div>
@@ -118,7 +132,7 @@ class AppContainer extends React.Component {
                     <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
                     <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
                 </select>
-                <input type="text" name="" defaultValue={this.state.filterSearchValue}/>
+                <input type="text" name="" value={this.state.filterSearchValue} onChange={this.handleSearchFilterChange} placeholder="/r/"/>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.filteredContent}/>
@@ -126,7 +140,17 @@ class AppContainer extends React.Component {
         </div>
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(this.componentIsReadyForUpdate(prevState)) {
+            this.filterContent();
+        }
+    }
 
+    componentIsReadyForUpdate(prevState) {
+        return prevState.filterNSFWValue !== this.state.filterNSFWValue
+            || prevState.filterSubmissionValue !== this.state.filterSubmissionValue
+            || prevState.filterSearchValue !== this.state.filterSearchValue;
+    }
 }
 
 export default AppContainer;
