@@ -16,6 +16,11 @@ class AppContainer extends React.Component {
         BOTH: 'both'
     };
 
+    SearchFilterTypeValues = {
+       SUBREDDIT: 'subreddit',
+       POSTS_TITLES_AND_COMMENT_BODIES: 'post_titles_and_bodies'
+    };
+
     constructor(props) {
         super(props);
         const reddit = new Snoowrap({
@@ -31,13 +36,15 @@ class AppContainer extends React.Component {
             filteredContent: [],
             filterSearchValue: '',
             filterNSFWValue: this.NSFWValues.BOTH,
-            filterSubmissionValue: this.SubmissionValues.BOTH
+            filterSubmissionValue: this.SubmissionValues.BOTH,
+            filterSearchTypeValue: this.SearchFilterTypeValues.SUBREDDIT
         };
 
         reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value));
         this.handlePostFilterChange = this.handlePostFilterChange.bind(this);
         this.handleNsfwFilterChange = this.handleNsfwFilterChange.bind(this);
         this.handleSearchFilterChange = this.handleSearchFilterChange.bind(this);
+        this.handleSearchFilterTypeChange = this.handleSearchFilterTypeChange.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
@@ -60,12 +67,18 @@ class AppContainer extends React.Component {
         this.setState({filterSearchValue: event.target.value});
     }
 
+    handleSearchFilterTypeChange(event) {
+        this.setState({filterSearchTypeValue: event.target.value});
+    }
+
     filterContent() {
         let savedContent = this.state.savedContent;
+        let filterSearchValue = this.state.filterSearchValue;
+        let filterSearchTypeValue = this.state.filterSearchTypeValue;
 
         let filteredByNsfwContent = this.filterByNsfw(savedContent);
         let filteredSubmissionContent = this.filterBySubmissionType(filteredByNsfwContent);
-        let filteredSearchedContent = this.filteredSearchContent(filteredSubmissionContent);
+        let filteredSearchedContent = this.filteredSearchContent(filteredSubmissionContent, filterSearchValue, filterSearchTypeValue);
         this.setState({filteredContent: filteredSearchedContent});
     }
 
@@ -108,14 +121,21 @@ class AppContainer extends React.Component {
         return filteredContent;
     }
 
-    filteredSearchContent(savedContent) {
-        return savedContent.filter(function (currentPost) {
-            if (currentPost.constructor.name === 'Comment') {
-                return (currentPost.body.includes(this.state.filterSearchValue));
-            } else if (currentPost.constructor.name === 'Submission') {
-                return (currentPost.title.includes(this.state.filterSearchValue));
-            }
-        });
+    filteredSearchContent(savedContent, filterSearchValue, filterSearchTypeValue) {
+        if(filterSearchTypeValue === this.SearchFilterTypeValues.SUBREDDIT) {
+            return savedContent.filter(function (currentPost) {
+                const subredditName = currentPost.subreddit_name_prefixed.toLowerCase().substring(2);
+                return (subredditName.includes(filterSearchValue));
+            });
+        } else if(filterSearchTypeValue === this.SearchFilterTypeValues.POSTS_TITLES_AND_COMMENT_BODIES) {
+            return savedContent.filter(function (currentPost) {
+                if (currentPost.constructor.name === 'Comment') {
+                    return (currentPost.body.toLowerCase().includes(filterSearchValue));
+                } else if (currentPost.constructor.name === 'Submission') {
+                    return (currentPost.title.toLowerCase().includes(filterSearchValue));
+                }
+            });
+        }
     }
 
     render() {
@@ -133,6 +153,10 @@ class AppContainer extends React.Component {
                     <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
                 </select>
                 <input type="text" name="" value={this.state.filterSearchValue} onChange={this.handleSearchFilterChange} placeholder="/r/"/>
+                <select id="searchFilterTypeSelection" value={this.state.filterSearchTypeValue} onChange={this.handleSearchFilterTypeChange}>
+                    <option value={this.SearchFilterTypeValues.SUBREDDIT}>Subreddits</option>
+                    <option value={this.SearchFilterTypeValues.POSTS_TITLES_AND_COMMENT_BODIES}>Post titles and comment bodies</option>
+                </select>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.filteredContent}/>
@@ -149,7 +173,8 @@ class AppContainer extends React.Component {
     componentIsReadyForUpdate(prevState) {
         return prevState.filterNSFWValue !== this.state.filterNSFWValue
             || prevState.filterSubmissionValue !== this.state.filterSubmissionValue
-            || prevState.filterSearchValue !== this.state.filterSearchValue;
+            || prevState.filterSearchValue !== this.state.filterSearchValue
+            || prevState.filterSearchTypeValue !== this.state.filterSearchTypeValue;
     }
 }
 
