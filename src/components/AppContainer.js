@@ -16,8 +16,7 @@ class AppContainer extends React.Component {
         BOTH: 'both'
     };
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
         const reddit = new Snoowrap({
             userAgent: process.env.REACT_APP_USERAGENT,
             clientId: process.env.REACT_APP_CLIENTID,
@@ -25,6 +24,11 @@ class AppContainer extends React.Component {
             username: process.env.REACT_APP_USERNAME,
             password: process.env.REACT_APP_PASSWORD
         });
+        reddit.getMe().getSavedContent().then(retrievedContent => this.saveSavedContentToState(retrievedContent));
+    }
+
+    constructor(props) {
+        super(props);
 
         this.state = {
             savedContent: [],
@@ -35,7 +39,7 @@ class AppContainer extends React.Component {
             filterSubmissionValue: this.SubmissionValues.BOTH
         };
 
-        reddit.getMe().getSavedContent().then(value => this.saveSavedContentToState(value));
+
         this.handlePostFilterChange = this.handlePostFilterChange.bind(this);
         this.handleNsfwFilterChange = this.handleNsfwFilterChange.bind(this);
         this.handleSubredditSearchFilterChange = this.handleSubredditSearchFilterChange.bind(this);
