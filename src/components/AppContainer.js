@@ -65,7 +65,7 @@ class AppContainer extends React.Component {
     }
 
     saveSavedContentToState(retrievedContent) {
-        this.setState({savedContent: retrievedContent, filteredContent: retrievedContent});
+        this.setState({savedContent: retrievedContent});
         console.log(retrievedContent)
     }
 
