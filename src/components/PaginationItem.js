@@ -3,7 +3,7 @@ import React from 'react'
 
 const PaginationItem = (props) => {
     return (
-        <button>{this.props.buttonIndex}</button>
+        <button>{props.buttonIndex}</button>
     )
 };
 

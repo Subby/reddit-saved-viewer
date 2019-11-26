@@ -20,7 +20,6 @@ class AppContainer extends React.Component {
     componentDidMount() {
         //this.retrieveContentFromReddit();
         this.deserialiseTestData();
-        this.setupPagination();
     }
 
     setupPagination() {
@@ -62,10 +61,11 @@ class AppContainer extends React.Component {
         this.handleSubredditSearchFilterChange = this.handleSubredditSearchFilterChange.bind(this);
         this.handlePostBodyTitleFilterChange = this.handlePostBodyTitleFilterChange.bind(this);
         this.handlePaginationItemClick = this.handlePaginationItemClick.bind(this);
+        this.setupPagination = this.setupPagination.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
-        this.setState({savedContent: retrievedContent});
+        this.setState({savedContent: retrievedContent, filteredContent: retrievedContent}, this.setupPagination);
         console.log(retrievedContent)
     }
 
@@ -160,7 +160,7 @@ class AppContainer extends React.Component {
         let slices = Math.ceil(savedContentSize / pageSize);
         let currentStartingIndex = 0;
         let pageInfo = [];
-        for(let i = 0; i < slices.length; i++) {
+        for(let i = 0; i < slices; i++) {
             let currentPageInfo = {
                 startingIndex: currentStartingIndex,
                 endingIndex: ((currentStartingIndex + pageSize) - 1)

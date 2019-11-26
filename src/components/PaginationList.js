@@ -1,5 +1,4 @@
 import React from 'react'
-import SavedContentItem from "./SavedContentItem";
 import PaginationItem from "./PaginationItem";
 
 const PaginationList = (props) => {
