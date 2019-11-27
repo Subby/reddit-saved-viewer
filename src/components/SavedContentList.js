@@ -16,7 +16,7 @@ const SavedContentList = (props) => {
     });
 
     return (
-        <ul>{savedContentItems}</ul>
+       <div id="buttons">{savedContentItems}</div>
     )
 
 
