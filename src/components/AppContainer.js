@@ -147,6 +147,9 @@ class AppContainer extends React.Component {
     }
 
     filteredPostBodyTitleSearchContent(savedContent, filterSearchValue) {
+        if(!filterSearchValue) {
+            return savedContent;
+        }
         return savedContent.filter(function (currentPost) {
             if (currentPost.constructor.name === 'Comment') {
                 return (currentPost.body.toLowerCase().includes(filterSearchValue));
@@ -173,8 +176,7 @@ class AppContainer extends React.Component {
 
     handlePaginationItemClick(startingIndex, endingIndex) {
         let slicedContent = this.state.savedContent.slice(startingIndex, endingIndex);
-        this.setState({filteredContent: slicedContent});
-        this.filterContent();
+        this.setState({filteredContent: slicedContent}, this.filterContent);
     }
 
     render() {
