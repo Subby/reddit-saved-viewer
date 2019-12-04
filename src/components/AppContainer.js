@@ -18,8 +18,8 @@ class AppContainer extends React.Component {
     };
 
     componentDidMount() {
-        //this.retrieveContentFromReddit();
-        this.deserialiseTestData();
+        this.retrieveContentFromReddit();
+        //this.deserialiseTestData();
     }
 
     setupPagination() {
@@ -89,7 +89,7 @@ class AppContainer extends React.Component {
     }
 
     filterContent() {
-        let savedContent = this.state.filteredContent;
+        let savedContent = this.state.savedContent;
         let filterSubredditSearchValue = this.state.filterSubredditSearchValue;
         let filterBodyTitleSearchValue = this.state.filterPostBodyTitleValue;
 
