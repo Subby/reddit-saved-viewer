@@ -22,9 +22,15 @@ class AppContainer extends React.Component {
         //this.deserialiseTestData();
     }
 
-    setupPagination() {
-        let pageInfo = this.sliceContentForPagination(this.state.pageSize, this.state.savedContent.length);
-        this.setState({pageInfo: pageInfo});
+    setupPagination(content) {
+        let pageInfo = this.sliceContentForPagination(this.state.pageSize, content.length);
+        this.setState({pageInfo: pageInfo}, this.setupDisplayedContent);
+    }
+
+    setupDisplayedContent() {
+        let firstPageInfo = this.state.pageInfo[0];
+        let slicedContent = this.handlePaginationItemClick(firstPageInfo.startingIndex, firstPageInfo.endingIndex);
+        this.setState({displayedContent: slicedContent});
     }
 
     retrieveContentFromReddit() {
@@ -46,6 +52,7 @@ class AppContainer extends React.Component {
         this.state = {
             savedContent: [],
             filteredContent: [],
+            displayedContent: [],
             filterSubredditSearchValue: '',
             filterPostBodyTitleValue: '',
             filterNSFWValue: this.NSFWValues.BOTH,
@@ -65,7 +72,7 @@ class AppContainer extends React.Component {
     }
 
     saveSavedContentToState(retrievedContent) {
-        this.setState({savedContent: retrievedContent, filteredContent: retrievedContent}, this.setupPagination);
+        this.setState({savedContent: retrievedContent}, () => this.setupPagination(retrievedContent));
         console.log(retrievedContent)
     }
 
@@ -97,7 +104,8 @@ class AppContainer extends React.Component {
         let filteredSubmissionContent = this.filterBySubmissionType(filteredByNsfwContent);
         let filteredSubredditContent = this.filteredSubredditSearchContent(filteredSubmissionContent, filterSubredditSearchValue);
         let filteredPostBodyTitleContent = this.filteredPostBodyTitleSearchContent(filteredSubredditContent, filterBodyTitleSearchValue);
-        this.setState({filteredContent: filteredPostBodyTitleContent});
+        let filteredAndPaginatedContent = this.setupPagination(filteredPostBodyTitleContent);
+        this.setState({displayedContent: filteredAndPaginatedContent});
     }
 
     filterByNsfw(savedContent) {
@@ -197,7 +205,7 @@ class AppContainer extends React.Component {
                 <input type="text" name="" value={this.state.filterPostBodyTitleValue} onChange={this.handlePostBodyTitleFilterChange} placeholder="Search for titles and comment content"/>
             </header>
             <section id="savedContent">
-                <SavedContentList savedContent={this.state.filteredContent}/>
+                <SavedContentList savedContent={this.state.displayedContent}/>
             </section>
             <footer>
                 <section id="pagination">
