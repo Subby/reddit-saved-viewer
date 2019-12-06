@@ -29,7 +29,7 @@ class AppContainer extends React.Component {
 
     setupDisplayedContent() {
         let firstPageInfo = this.state.pageInfo[0];
-        let slicedContent = this.handlePaginationItemClick(firstPageInfo.startingIndex, firstPageInfo.endingIndex);
+        let slicedContent = this.sliceContent(firstPageInfo.startingIndex, firstPageInfo.endingIndex);
         this.setState({displayedContent: slicedContent});
     }
 
@@ -69,6 +69,7 @@ class AppContainer extends React.Component {
         this.handlePostBodyTitleFilterChange = this.handlePostBodyTitleFilterChange.bind(this);
         this.handlePaginationItemClick = this.handlePaginationItemClick.bind(this);
         this.setupPagination = this.setupPagination.bind(this);
+        this.setupDisplayedContent = this.setupDisplayedContent.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
@@ -182,9 +183,14 @@ class AppContainer extends React.Component {
         return pageInfo;
     }
 
-    handlePaginationItemClick(startingIndex, endingIndex) {
-        let slicedContent = this.state.savedContent.slice(startingIndex, endingIndex);
+    handlePaginationItemClick(startingIndex, endingIndex, firstTime = false) {
+        let slicedContent = this.sliceContent(startingIndex, endingIndex);
         this.setState({displayedContent: slicedContent}, this.filterContent);
+    }
+
+    sliceContent(startingIndex, endingIndex) {
+        let slicedContent = this.state.savedContent.slice(startingIndex, endingIndex);
+        return slicedContent;
     }
 
     render() {
