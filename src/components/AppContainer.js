@@ -29,7 +29,10 @@ class AppContainer extends React.Component {
 
     setupDisplayedContent() {
         let firstPageInfo = this.state.pageInfo[0];
-        let slicedContent = this.sliceContent(firstPageInfo.startingIndex, firstPageInfo.endingIndex);
+        let slicedContent = [];
+        if(firstPageInfo) {
+            slicedContent = this.sliceContent(firstPageInfo.startingIndex, firstPageInfo.endingIndex)
+        }
         this.setState({displayedContent: slicedContent});
     }
 
@@ -70,10 +73,11 @@ class AppContainer extends React.Component {
         this.handlePaginationItemClick = this.handlePaginationItemClick.bind(this);
         this.setupPagination = this.setupPagination.bind(this);
         this.setupDisplayedContent = this.setupDisplayedContent.bind(this);
+        this.sliceContent = this.sliceContent.bind(this);
     }
 
     saveSavedContentToState(retrievedContent) {
-        this.setState({savedContent: retrievedContent}, () => this.setupPagination(retrievedContent));
+        this.setState({savedContent: retrievedContent, filteredContent: retrievedContent}, () => this.setupPagination(retrievedContent));
         console.log(retrievedContent)
     }
 
@@ -105,8 +109,7 @@ class AppContainer extends React.Component {
         let filteredSubmissionContent = this.filterBySubmissionType(filteredByNsfwContent);
         let filteredSubredditContent = this.filteredSubredditSearchContent(filteredSubmissionContent, filterSubredditSearchValue);
         let filteredPostBodyTitleContent = this.filteredPostBodyTitleSearchContent(filteredSubredditContent, filterBodyTitleSearchValue);
-        let filteredAndPaginatedContent = this.setupPagination(filteredPostBodyTitleContent);
-        this.setState({displayedContent: filteredAndPaginatedContent});
+        this.setState({filteredContent: filteredPostBodyTitleContent}, () => this.setupPagination(filteredPostBodyTitleContent));
     }
 
     filterByNsfw(savedContent) {
@@ -183,13 +186,13 @@ class AppContainer extends React.Component {
         return pageInfo;
     }
 
-    handlePaginationItemClick(startingIndex, endingIndex, firstTime = false) {
+    handlePaginationItemClick(startingIndex, endingIndex) {
         let slicedContent = this.sliceContent(startingIndex, endingIndex);
-        this.setState({displayedContent: slicedContent}, this.filterContent);
+        this.setState({displayedContent: slicedContent});
     }
 
     sliceContent(startingIndex, endingIndex) {
-        let slicedContent = this.state.savedContent.slice(startingIndex, endingIndex);
+        let slicedContent = this.state.filteredContent.slice(startingIndex, endingIndex);
         return slicedContent;
     }
 
