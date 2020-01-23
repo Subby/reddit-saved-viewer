@@ -2,6 +2,19 @@ import React from 'react'
 import Snoowrap from 'snoowrap'
 import SavedContentList from "./SavedContentList";
 import PaginationList from "./PaginationList";
+import 'bulma/css/bulma.css';
+
+function FilterSelectControl(props) {
+    const optionValues = Object.values(props.optionValues).map((option) => (
+        <option value={option}>{option}</option>
+    ));
+    return <div className="select">
+        <select id="postFilterSelection" value={props.value} onChange={props.onChange}>
+            {optionValues}
+        </select>
+    </div>;
+}
+
 
 class AppContainer extends React.Component {
 
@@ -52,8 +65,6 @@ class AppContainer extends React.Component {
             password: process.env.REACT_APP_PASSWORD
         });
         reddit.getMe().getSavedContent().fetchAll().then(retrievedContent => this.saveSavedContentToState(retrievedContent));
-        //reddit.getMe().getSavedContent().then(retrievedContent => console.log(JSON.stringify(retrievedContent)));
-
     }
 
     constructor(props) {
@@ -209,27 +220,31 @@ class AppContainer extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div className="container">
             <header>
-                <p>Header</p>
-                <select id="postFilterSelection" value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}>
-                    <option value={this.SubmissionValues.BOTH}>Both</option>
-                    <option value={this.SubmissionValues.SUBMISSIONS_ONLY}>Submissions Only</option>
-                    <option value={this.SubmissionValues.POSTS_ONLY}>Posts Only</option>
-                </select>
-                <select id="nsfwFilterSelection" value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}>
-                    <option value={this.NSFWValues.BOTH}>Both</option>
-                    <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
-                    <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
-                </select>
-                <select id="pageSizeSelection" value={this.state.pageSize} onChange={this.handlePageSizeChange}>
-                    <option value={this.NSFWValues.FIVE}>5</option>
-                    <option value={this.NSFWValues.FIFTEEN}>15</option>
-                    <option value={this.NSFWValues.THIRTY_FIVE}>35</option>
-                    <option value={this.NSFWValues.FIFTY_FIVE}>5</option>
-                </select>
-                <input type="text" name="" value={this.state.filterSubredditSearchValue} onChange={this.handleSubredditSearchFilterChange} placeholder="/r/"/>
-                <input type="text" name="" value={this.state.filterPostBodyTitleValue} onChange={this.handlePostBodyTitleFilterChange} placeholder="Search for titles and comment content"/>
+                <FilterSelectControl value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}
+                                     optionValues={this.SubmissionValues}/>
+                <div className="select">
+                    <select id="nsfwFilterSelection" value={this.state.filterNSFWValue}
+                            onChange={this.handleNsfwFilterChange}>
+                        <option value={this.NSFWValues.BOTH}>Both</option>
+                        <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
+                        <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
+                    </select>
+                </div>
+                <div className="select">
+                    <select id="pageSizeSelection" value={this.state.pageSize} onChange={this.handlePageSizeChange}>
+                        <option value={this.PageSizeValues.FIVE}>5</option>
+                        <option value={this.PageSizeValues.FIFTEEN}>15</option>
+                        <option value={this.PageSizeValues.THIRTY_FIVE}>35</option>
+                        <option value={this.PageSizeValues.FIFTY_FIVE}>5</option>
+                    </select>
+                </div>
+                <input className="input" type="text" name="" value={this.state.filterSubredditSearchValue}
+                       onChange={this.handleSubredditSearchFilterChange} placeholder="/r/"/>
+                <input className="input" type="text" name="" value={this.state.filterPostBodyTitleValue}
+                       onChange={this.handlePostBodyTitleFilterChange}
+                       placeholder="Search for titles and comment content"/>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.displayedContent}/>
