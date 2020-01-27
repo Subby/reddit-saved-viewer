@@ -3,31 +3,20 @@ import Snoowrap from 'snoowrap'
 import SavedContentList from "./SavedContentList";
 import PaginationList from "./PaginationList";
 import 'bulma/css/bulma.css';
-
-function FilterSelectControl(props) {
-    const optionValues = Object.values(props.optionValues).map((option) => (
-        <option value={option}>{option}</option>
-    ));
-    return <div className="select">
-        <select id="postFilterSelection" value={props.value} onChange={props.onChange}>
-            {optionValues}
-        </select>
-    </div>;
-}
-
+import FilterSelectControl from "./controls/FilterSelectControl"
 
 class AppContainer extends React.Component {
 
     NSFWValues = {
-        NSFW_ONLY: 'nsfw_only',
-        SFW_ONLY: 'sfw_only',
-        BOTH: 'both'
+        NSFW_ONLY: 'NSFW Only',
+        SFW_ONLY: 'SFW Only',
+        BOTH: 'Both'
     };
 
     SubmissionValues = {
-        POSTS_ONLY: 'posts_only',
-        SUBMISSIONS_ONLY: 'submissions_only',
-        BOTH: 'both'
+        POSTS_ONLY: 'Posts Only',
+        SUBMISSIONS_ONLY: 'Submissions Only',
+        BOTH: 'Both'
     };
 
     PageSizeValues = {
@@ -224,22 +213,10 @@ class AppContainer extends React.Component {
             <header>
                 <FilterSelectControl value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}
                                      optionValues={this.SubmissionValues}/>
-                <div className="select">
-                    <select id="nsfwFilterSelection" value={this.state.filterNSFWValue}
-                            onChange={this.handleNsfwFilterChange}>
-                        <option value={this.NSFWValues.BOTH}>Both</option>
-                        <option value={this.NSFWValues.SFW_ONLY}>SFW only</option>
-                        <option value={this.NSFWValues.NSFW_ONLY}>NSFW Only</option>
-                    </select>
-                </div>
-                <div className="select">
-                    <select id="pageSizeSelection" value={this.state.pageSize} onChange={this.handlePageSizeChange}>
-                        <option value={this.PageSizeValues.FIVE}>5</option>
-                        <option value={this.PageSizeValues.FIFTEEN}>15</option>
-                        <option value={this.PageSizeValues.THIRTY_FIVE}>35</option>
-                        <option value={this.PageSizeValues.FIFTY_FIVE}>5</option>
-                    </select>
-                </div>
+                <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
+                                     optionValues={this.NSFWValues}/>
+                <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
+                                     optionValues={this.PageSizeValues}/>
                 <input className="input" type="text" name="" value={this.state.filterSubredditSearchValue}
                        onChange={this.handleSubredditSearchFilterChange} placeholder="/r/"/>
                 <input className="input" type="text" name="" value={this.state.filterPostBodyTitleValue}
