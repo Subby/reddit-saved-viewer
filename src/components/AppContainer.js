@@ -4,6 +4,7 @@ import SavedContentList from "./SavedContentList";
 import PaginationList from "./PaginationList";
 import 'bulma/css/bulma.css';
 import FilterSelectControl from "./controls/FilterSelectControl"
+import InputControl from "./controls/InputControl";
 
 class AppContainer extends React.Component {
 
@@ -20,10 +21,10 @@ class AppContainer extends React.Component {
     };
 
     PageSizeValues = {
-      FIVE: 5,
-      FIFTEEN: 15,
-      THIRTY_FIVE: 35,
-      FIFTY_FIVE: 55
+        FIVE: 5,
+        FIFTEEN: 15,
+        THIRTY_FIVE: 35,
+        FIFTY_FIVE: 55
     };
 
     componentDidMount() {
@@ -211,17 +212,29 @@ class AppContainer extends React.Component {
     render() {
         return <div className="container">
             <header>
-                <FilterSelectControl value={this.state.filterSubmissionValue} onChange={this.handlePostFilterChange}
-                                     optionValues={this.SubmissionValues}/>
-                <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
-                                     optionValues={this.NSFWValues}/>
-                <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
-                                     optionValues={this.PageSizeValues}/>
-                <input className="input" type="text" name="" value={this.state.filterSubredditSearchValue}
-                       onChange={this.handleSubredditSearchFilterChange} placeholder="/r/"/>
-                <input className="input" type="text" name="" value={this.state.filterPostBodyTitleValue}
-                       onChange={this.handlePostBodyTitleFilterChange}
-                       placeholder="Search for titles and comment content"/>
+                <div className="columns is-vcentered">
+                    <div className="column">
+                        <FilterSelectControl value={this.state.filterSubmissionValue}
+                                             onChange={this.handlePostFilterChange}
+                                             optionValues={this.SubmissionValues} label={"Filter by submission type"}/>
+                    </div>
+                    <div className="column">
+                        <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
+                                             optionValues={this.NSFWValues} label={"Filter by NSFW"}/>
+                    </div>
+                    <div className="column">
+                        <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
+                                             optionValues={this.PageSizeValues} label={"Number of posts to display"}/>
+                    </div>
+                    <div className="column">
+                        <InputControl value={this.state.filterSubredditSearchValue}
+                                      onChange={this.handleSubredditSearchFilterChange} placeholder={"/r/"}/>
+                    </div>
+                    <div className="column">
+                        <InputControl value={this.state.filterPostBodyTitleValue}
+                                      onChange={this.handlePostBodyTitleFilterChange} placeholder={"Search for titles and comment content"}/>
+                    </div>
+                </div>
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.displayedContent}/>
