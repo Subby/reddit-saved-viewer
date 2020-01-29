@@ -11,13 +11,13 @@ class AppContainer extends React.Component {
     NSFWValues = {
         NSFW_ONLY: 'NSFW Only',
         SFW_ONLY: 'SFW Only',
-        BOTH: 'Both'
+        BOTH: 'NSFW & SFW'
     };
 
     SubmissionValues = {
         POSTS_ONLY: 'Posts Only',
         SUBMISSIONS_ONLY: 'Submissions Only',
-        BOTH: 'Both'
+        BOTH: 'Posts & Submissions'
     };
 
     PageSizeValues = {
