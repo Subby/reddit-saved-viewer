@@ -92,13 +92,11 @@ class AppContainer extends React.Component {
 
     handlePostFilterChange(event) {
         this.setState({filterSubmissionValue: event.target.value});
-        console.log("post filter val:" + this.state.filterSubmissionValue);
         this.filterContent();
     }
 
     handleNsfwFilterChange(event) {
         this.setState({filterNSFWValue: event.target.value});
-        console.log("post filter val:" + this.state.filterNSFWValue);
     }
 
     handlePageSizeChange(event) {
@@ -209,9 +207,16 @@ class AppContainer extends React.Component {
         return slicedContent;
     }
 
+
+
     render() {
         return <div className="container">
             <header>
+                <div className="columns">
+                    <div className="column">
+                        <h2 className="title is-2">Reddit Saved Viewer</h2>
+                    </div>
+                </div>
                 <div className="columns is-vcentered">
                     <div className="column">
                         <FilterSelectControl value={this.state.filterSubmissionValue}
