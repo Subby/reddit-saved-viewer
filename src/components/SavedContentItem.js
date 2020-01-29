@@ -4,7 +4,7 @@ import React from 'react'
 const SavedContentItem = (props) => {
     return (
         <div className="columns">
-            <div className="column is-one-quarter">
+            <div className="column is-2">
                 <img src={props.thumbnail} alt="Thumbnail"/>
             </div>
             <div className="column">

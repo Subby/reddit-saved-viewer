@@ -14,7 +14,12 @@ const PaginationList = (props) => {
     });
 
     return (
-        <ul>{paginationItems}</ul>
+        <div className="columns">
+            <div className="column">
+                <ul>{paginationItems}</ul>
+            </div>
+        </div>
+
     )
 
 

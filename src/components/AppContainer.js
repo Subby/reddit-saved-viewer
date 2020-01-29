@@ -217,25 +217,27 @@ class AppContainer extends React.Component {
                         <h2 className="title is-2">Reddit Saved Viewer</h2>
                     </div>
                 </div>
-                <div className="columns is-vcentered">
-                    <div className="column">
+                <div className="columns">
+                    <div className="column is-2">
                         <FilterSelectControl value={this.state.filterSubmissionValue}
                                              onChange={this.handlePostFilterChange}
                                              optionValues={this.SubmissionValues} label={"Filter by submission type"}/>
                     </div>
-                    <div className="column">
+                    <div className="column is-2">
                         <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
                                              optionValues={this.NSFWValues} label={"Filter by NSFW"}/>
                     </div>
-                    <div className="column">
+                    <div className="column is-2">
                         <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
                                              optionValues={this.PageSizeValues} label={"Number of posts to display"}/>
                     </div>
-                    <div className="column">
+                </div>
+                <div className="columns is-vcentered">
+                    <div className="column is-3">
                         <InputControl value={this.state.filterSubredditSearchValue}
                                       onChange={this.handleSubredditSearchFilterChange} placeholder={"/r/"}/>
                     </div>
-                    <div className="column">
+                    <div className="column is-3">
                         <InputControl value={this.state.filterPostBodyTitleValue}
                                       onChange={this.handlePostBodyTitleFilterChange} placeholder={"Search for titles and comment content"}/>
                     </div>
