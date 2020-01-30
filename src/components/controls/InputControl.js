@@ -3,8 +3,11 @@ import * as PropTypes from "prop-types";
 
 const InputControl = (props) => {
     return (
-        <input className="input" type="text" name="" value={props.value}
+        <div className="field">
+            <label className="label">{props.label}</label>
+            <input className="input" type="text" name="" value={props.value}
                   onChange={props.onChange} placeholder={props.placeholder}/>
+        </div>
                   );
 };
 

@@ -211,35 +211,35 @@ class AppContainer extends React.Component {
 
     render() {
         return <div className="container">
-            <header>
+            <header className="has-text-centered">
                 <div className="columns">
                     <div className="column">
                         <h2 className="title is-2">Reddit Saved Viewer</h2>
                     </div>
                 </div>
                 <div className="columns">
-                    <div className="column is-2">
+                    <div className="column">
                         <FilterSelectControl value={this.state.filterSubmissionValue}
                                              onChange={this.handlePostFilterChange}
                                              optionValues={this.SubmissionValues} label={"Filter by submission type"}/>
                     </div>
-                    <div className="column is-2">
+                    <div className="column">
                         <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
                                              optionValues={this.NSFWValues} label={"Filter by NSFW"}/>
                     </div>
-                    <div className="column is-2">
+                    <div className="column">
                         <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
                                              optionValues={this.PageSizeValues} label={"Number of posts to display"}/>
                     </div>
                 </div>
                 <div className="columns is-vcentered">
-                    <div className="column is-3">
+                    <div className="column">
                         <InputControl value={this.state.filterSubredditSearchValue}
-                                      onChange={this.handleSubredditSearchFilterChange} placeholder={"/r/"}/>
+                                      onChange={this.handleSubredditSearchFilterChange} placeholder={"/r/"} label={"Filter by subreddit"}/>
                     </div>
-                    <div className="column is-3">
+                    <div className="column">
                         <InputControl value={this.state.filterPostBodyTitleValue}
-                                      onChange={this.handlePostBodyTitleFilterChange} placeholder={"Search for titles and comment content"}/>
+                                      onChange={this.handlePostBodyTitleFilterChange} placeholder={"Search for titles and comment content"} label={"Filter by post titles or bodies"}/>
                     </div>
                 </div>
             </header>
