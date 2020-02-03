@@ -28,9 +28,20 @@ const SavedContentList = (props) => {
         />
     });
 
-    return (
-       <div id="buttons">{savedContentItems}</div>
-    )
+    if(savedContentItems.length === 0) {
+        return (
+            <div>
+                loading...
+            </div>
+        )
+    } else {
+        return (
+            <div id="buttons">
+                {savedContentItems}
+            </div>
+        )
+    }
+
 
 
 };
