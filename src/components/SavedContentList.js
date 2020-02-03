@@ -30,8 +30,10 @@ const SavedContentList = (props) => {
 
     if(savedContentItems.length === 0) {
         return (
-            <div>
-                loading...
+            <div className="columns">
+                <div className="column is-centered is-vcentered">
+                    <progress className="progress is-small is-info" max="100">15%</progress>
+                </div>
             </div>
         )
     } else {
