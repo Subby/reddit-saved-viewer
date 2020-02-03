@@ -5,7 +5,7 @@ const SavedContentItem = (props) => {
     return (
         <div className="columns">
             <div className="column is-2">
-                <img src={props.thumbnail} alt="Thumbnail"/>
+                <img loading="lazy" src={props.thumbnail} alt="Thumbnail"/>
             </div>
             <div className="column">
                 <h1><a href={props.url}>{props.title}</a></h1>
