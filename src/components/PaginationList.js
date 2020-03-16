@@ -1,27 +1,26 @@
-import React, {createRef} from 'react'
+import React, {useState, useRef} from 'react'
 import PaginationItem from "./PaginationItem";
 
 // TODO: Change to component
 const PaginationList = (props) => {
 
-    let selectedPaginationItem = 0;
+    const [previousPaginationItemRefIndex,setPreviousPaginationItemRefIndex] = useState(null);
+
 
     //function which goes through each paginationItem and updates selectedField
-    const setPaginationItemAsActive = (index) => {
-        paginationItems[selectedPaginationItem].setState({isCurrentlySelected: false});
-        selectedPaginationItem = index;
+    const setPaginationItemAsActive = (e) => {
+        const currentElement = e.target;
+        setPreviousPaginationItemRefIndex(e);
     };
     const paginationItems = props.pageInfo.map((currentPaginationItem, index) => {
-
         return <PaginationItem
             key={index}
             buttonIndex={index}
             startingIndex={currentPaginationItem.startingIndex}
             endingIndex={currentPaginationItem.endingIndex}
             handleOnClick={props.handlePaginationItemClick}
-            currentlySelected={false}
-            setActive={index === 0}
             handleSetActive={setPaginationItemAsActive}
+            isSelected={index===0}
         />
     });
 
