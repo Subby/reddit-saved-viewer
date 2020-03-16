@@ -6,7 +6,9 @@ const SavedContentItem = (props) => {
         <div className="box">
             <div className="media">
                 <figure className="media-left">
-                    <img loading="lazy" src={props.thumbnail} alt="Thumbnail"/>
+                    <p is-class="image is-64x64">
+                        <img loading="lazy" src={props.thumbnail} alt="Thumbnail"/>
+                    </p>
                 </figure>
                 <div className="media-content">
                     <div className="content">

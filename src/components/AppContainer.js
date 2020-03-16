@@ -70,7 +70,8 @@ class AppContainer extends React.Component {
             filterSubmissionValue: this.SubmissionValues.BOTH,
             pageSize: this.PageSizeValues.FIFTEEN,
             currentPage : 0,
-            pageInfo: []
+            pageInfo: [],
+            currentlySelectedIndex: 0
         };
 
 
@@ -199,7 +200,7 @@ class AppContainer extends React.Component {
 
     handlePaginationItemClick(startingIndex, endingIndex) {
         let slicedContent = this.sliceContent(startingIndex, endingIndex);
-        this.setState({displayedContent: slicedContent});
+        this.setState({displayedContent: slicedContent, currentlySelectedIndex: startingIndex});
     }
 
     sliceContent(startingIndex, endingIndex) {
