@@ -204,8 +204,7 @@ class AppContainer extends React.Component {
     }
 
     sliceContent(startingIndex, endingIndex) {
-        let slicedContent = this.state.filteredContent.slice(startingIndex, endingIndex);
-        return slicedContent;
+        return this.state.filteredContent.slice(startingIndex, endingIndex);
     }
 
 

@@ -1,29 +1,36 @@
-import React, {createRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import PaginationItem from "./PaginationItem";
 
-// TODO: Change to component
 const PaginationList = (props) => {
 
-    let selectedPaginationItem = 0;
-
-    //function which goes through each paginationItem and updates selectedField
-    const setPaginationItemAsActive = (index) => {
-        paginationItems[selectedPaginationItem].setState({isCurrentlySelected: false});
-        selectedPaginationItem = index;
+    let handlePaginationItemClick = (buttonIndex, startingIndex, endingIndex) => {
+        setPaginationItems(setupPaginationItems(buttonIndex));
+        props.handlePaginationItemClick(startingIndex, endingIndex);
     };
-    const paginationItems = props.pageInfo.map((currentPaginationItem, index) => {
 
-        return <PaginationItem
-            key={index}
-            buttonIndex={index}
-            startingIndex={currentPaginationItem.startingIndex}
-            endingIndex={currentPaginationItem.endingIndex}
-            handleOnClick={props.handlePaginationItemClick}
-            currentlySelected={false}
-            setActive={index === 0}
-            handleSetActive={setPaginationItemAsActive}
-        />
-    });
+    let setupPaginationItems = (defaultSelectedIndex) => {
+        return props.pageInfo.map((currentPaginationItem, index) => {
+            return <PaginationItem
+                key={index}
+                buttonIndex={index}
+                startingIndex={currentPaginationItem.startingIndex}
+                endingIndex={currentPaginationItem.endingIndex}
+                handleOnClick={handlePaginationItemClick}
+                isCurrentlySelected={index === defaultSelectedIndex}
+            />;
+        });
+    };
+
+    let initialPaginationItems = setupPaginationItems(0);
+
+    useEffect(() => {
+        setPaginationItems(initialPaginationItems);
+    }, [props.pageInfo]);
+
+
+
+    const [paginationItems, setPaginationItems] = useState(initialPaginationItems);
+
 
     return (
         <div className="columns">
@@ -34,10 +41,11 @@ const PaginationList = (props) => {
 
             </div>
         </div>
-
-    )
-
+    );
 
 };
+
+
+
 
 export default PaginationList;
