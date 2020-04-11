@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react'
 
 
 const PaginationItem = (props) => {
@@ -6,20 +6,16 @@ const PaginationItem = (props) => {
     return (
         <li>
             <a className=
-
-                   {props.isSelected
-                       ? paginationPrefix + "is-current"
+                   {props.isCurrentlySelected
+                       ? paginationPrefix + " is-current"
                        : paginationPrefix
                    }
-               onClick={(e) => {
-                   props.handleSetActive(e);
-                   props.handleOnClick(props.startingIndex, props.endingIndex)
-               }
-               }>
+               onClick={() => {props.handleOnClick(props.buttonIndex, props.startingIndex, props.endingIndex)}}>
                 {props.buttonIndex + 1}
             </a>
         </li>
-    );
+    )
 };
+
 
 export default PaginationItem;
