@@ -33,7 +33,7 @@ class AppContainer extends React.Component {
     }
 
     setupPagination(content) {
-        let pageInfo = this.sliceContentForPagination(this.state.pageSize, content.length);
+        let pageInfo = this.sliceContentForPagination(parseInt(this.state.pageSize), content.length);
         this.setState({pageInfo: pageInfo}, this.setupDisplayedContent);
     }
 
