@@ -2,9 +2,8 @@ import React from 'react'
 import Snoowrap from 'snoowrap'
 import SavedContentList from "./SavedContentList";
 import PaginationList from "./PaginationList";
+import {Filters} from "./controls/Filters"
 import 'bulma/css/bulma.css';
-import FilterSelectControl from "./controls/FilterSelectControl"
-import InputControl from "./controls/InputControl";
 
 class AppContainer extends React.Component {
 
@@ -25,6 +24,12 @@ class AppContainer extends React.Component {
         FIFTEEN: 15,
         THIRTY_FIVE: 35,
         FIFTY_FIVE: 55
+    };
+
+    filterValues = {
+        filterSubmissionTypeValues: this.SubmissionValues,
+        NSFWValues: this.NSFWValues,
+        pageSizeValues: this.PageSizeValues,
     };
 
     componentDidMount() {
@@ -217,31 +222,18 @@ class AppContainer extends React.Component {
                         <h2 className="title is-2">Reddit Saved Viewer</h2>
                     </div>
                 </div>
-                <div className="columns">
-                    <div className="column">
-                        <FilterSelectControl value={this.state.filterSubmissionValue}
-                                             onChange={this.handlePostFilterChange}
-                                             optionValues={this.SubmissionValues} label={"Filter by submission type"}/>
-                    </div>
-                    <div className="column">
-                        <FilterSelectControl value={this.state.filterNSFWValue} onChange={this.handleNsfwFilterChange}
-                                             optionValues={this.NSFWValues} label={"Filter by NSFW"}/>
-                    </div>
-                    <div className="column">
-                        <FilterSelectControl value={this.state.pageSize} onChange={this.handlePageSizeChange}
-                                             optionValues={this.PageSizeValues} label={"Number of posts to display"}/>
-                    </div>
-                </div>
-                <div className="columns is-vcentered">
-                    <div className="column">
-                        <InputControl value={this.state.filterSubredditSearchValue}
-                                      onChange={this.handleSubredditSearchFilterChange} placeholder={"/r/"} label={"Filter by subreddit"}/>
-                    </div>
-                    <div className="column">
-                        <InputControl value={this.state.filterPostBodyTitleValue}
-                                      onChange={this.handlePostBodyTitleFilterChange} placeholder={"Search for titles and comment content"} label={"Filter by post titles or bodies"}/>
-                    </div>
-                </div>
+                <Filters filterValues={this.filterValues}
+                         filterSubmissionTypeValue={this.state.filterSubmissionValue}
+                         handleSubmissionTypeChange={this.handlePostFilterChange}
+                         filterNSFWValue={this.state.filterNSFWValue}
+                         handleNSFWFilterChange={this.handleNsfwFilterChange}
+                         filterPageSizeValue={this.state.pageSize}
+                         handlePageSizeFilterChange={this.handlePageSizeChange}
+                         filterSubredditSearchValue={this.state.filterSubredditSearchValue}
+                         handleSubredditSearchFilterChange={this.handleSubredditSearchFilterChange}
+                         filterPostBodyTitleValue={this.state.filterPostBodyTitleValue}
+                         handlePostBodyTitleFilterChange={this.handlePostBodyTitleFilterChange}
+                />
             </header>
             <section id="savedContent">
                 <SavedContentList savedContent={this.state.displayedContent}/>
